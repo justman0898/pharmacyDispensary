@@ -1,5 +1,6 @@
 package com.pharmacy.data.models;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Drug {
@@ -8,8 +9,9 @@ public class Drug {
     private String drugName;
     private DrugCategory drugCategory;
     private DrugType drugtype;
-    private LocalDate expiryDate;
-    private LocalDate dateCreated =  LocalDate.now();
+    private java.sql.Date expiryDate;
+    private java.sql.Date dateCreated = Date.valueOf(LocalDate.now());
+    private java.sql.Date manufactureDate;
     private long quantity;
 
     public int getDrugId() {
@@ -45,18 +47,18 @@ public class Drug {
     }
 
     public LocalDate getExpiryDate() {
-        return expiryDate;
+        return expiryDate.toLocalDate();
     }
 
-    public void setExpiryDate(LocalDate expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 
     public LocalDate getDateCreated() {
-        return dateCreated;
+        return dateCreated.toLocalDate();
     }
 
-    public void setDateCreated(LocalDate dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -66,5 +68,13 @@ public class Drug {
 
     public void setQuantity(long quantity) {
         this.quantity = quantity;
+    }
+
+    public LocalDate getManufactureDate() {
+        return manufactureDate.toLocalDate();
+    }
+
+    public void setManufactureDate(Date manufactureDate) {
+        this.manufactureDate = manufactureDate;
     }
 }
