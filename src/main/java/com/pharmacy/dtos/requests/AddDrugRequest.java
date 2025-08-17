@@ -3,6 +3,7 @@ package com.pharmacy.dtos.requests;
 import com.pharmacy.data.models.DrugCategory;
 import com.pharmacy.data.models.DrugType;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class AddDrugRequest {
@@ -10,8 +11,9 @@ public class AddDrugRequest {
     private String drugName;
     private DrugCategory drugCategory;
     private DrugType drugType;
-    private LocalDate expiryDate;
-    private LocalDate dateCreated = LocalDate.now();
+    private java.sql.Date expiryDate;
+    private java.sql.Date dateCreated = Date.valueOf(LocalDate.now());
+    private java.sql.Date manufactureDate;
     private long quantity;
 
 
@@ -40,26 +42,35 @@ public class AddDrugRequest {
     }
 
     public LocalDate getDateCreated() {
-        return dateCreated;
+        return dateCreated.toLocalDate();
     }
 
-    public void setDateCreated(LocalDate dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
     public LocalDate getExpiryDate() {
-        return expiryDate;
+        return expiryDate.toLocalDate();
     }
 
-    public void setExpiryDate(LocalDate expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
+
     public long getQuantity() {
         return quantity;
     }
 
     public void setQuantity(long quantity) {
         this.quantity = quantity;
+    }
+
+    public LocalDate getManufactureDate() {
+        return manufactureDate.toLocalDate();
+    }
+
+    public void setManufactureDate(Date manufactureDate) {
+        this.manufactureDate = manufactureDate;
     }
 
 }
