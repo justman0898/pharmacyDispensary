@@ -1,0 +1,16 @@
+package com.pharmacy.data.models;
+
+public enum DrugCategory {
+    ANTIBIOTIC,
+    ANALGESIC,
+    ANTIPYRETIC,
+    ANTACID,
+    ANTIDEPRESSANT,
+    ANTIHISTAMINE,
+    ANTISEPTIC,
+    ANTIVIRAL,
+    ANTIFUNGAL,
+    COUGH_SUPPRESSANT,
+    DECONGESTANT,
+    LAXATIVE
+}
