@@ -1,6 +1,7 @@
 package com.pharmacy.data.repositories;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import com.pharmacy.config.DataSourceConfig;
 import com.pharmacy.data.models.Drug;
 import com.pharmacy.data.models.DrugCategory;
 import org.apache.commons.dbutils.QueryRunner;
@@ -16,19 +17,27 @@ public class DrugRepositoryImpl implements DrugRepository {
     private final QueryRunner queryRunner;
     private int count;
 
-    public DrugRepositoryImpl(MysqlDataSource dataSource) {
-        this.queryRunner = new QueryRunner(dataSource);
+    public DrugRepositoryImpl() {
+        this.queryRunner = new QueryRunner(DataSourceConfig.createDataSource());
     }
 
+    public DrugRepositoryImpl(MysqlDataSource db) {
+        this.queryRunner = new QueryRunner(db);
+    }
 
     @Override
     public Drug save(Drug drug) {
         try {
-            String sql = "INSERT INTO drugs (drug_id, drug_name, drug_category, drug_type, expiry_date, date_created, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            drug.setDrugId(++count);
-            queryRunner.update(sql, drug.getDrugId(), drug.getDrugName(), drug.getDrugCategory().toString(), drug.getDrugtype().toString(), drug.getExpiryDate(), drug.getDateCreated(), drug.getQuantity());
+            if (drug.getDrugId() != 0){
+                String sql = "UPDATE drugs SET drug_name =?, drug_category=?, drug_type=?, expiry_date=?, date_created=?, manufacture_date=?, quantity=? WHERE drug_id = ?";
+                queryRunner.update(sql, drug.getDrugName(), drug.getDrugCategory().toString(), drug.getDrugtype().toString(), drug.getExpiryDate(), drug.getDateCreated(), drug.getManufactureDate(), drug.getQuantity(), drug.getDrugId());
+            }else {
+                String sql = "INSERT INTO drugs (drug_id, drug_name, drug_category, drug_type, expiry_date, date_created, manufacture_date, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                drug.setDrugId(++count);
+                queryRunner.update(sql, drug.getDrugId(), drug.getDrugName(), drug.getDrugCategory().toString(), drug.getDrugtype().toString(), drug.getExpiryDate(), drug.getDateCreated(), drug.getManufactureDate(), drug.getQuantity());
+            }
+                return drug;
 
-            return drug;
         }catch(SQLException e) {
             throw new RuntimeException(e);
         }
@@ -68,7 +77,6 @@ public class DrugRepositoryImpl implements DrugRepository {
     @Override
     public List<Drug> findAll() {
         try {
-
             String sql = "SELECT * FROM drugs";
             return queryRunner.query(sql, new BeanListHandler<>(Drug.class));
         }catch(SQLException e) {

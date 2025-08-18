@@ -1,4 +1,4 @@
-package com.pharmacy.repositories;
+package com.pharmacy.data.repositories;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import com.pharmacy.data.models.Drug;
@@ -41,7 +41,7 @@ public class DrugRepositoryTest {
     }
 
     @Test
-    public void testThatCanSaveAndRetrieveDrug() {
+    void testThatCanSaveAndRetrieveDrug() {
         Drug drug = new Drug();
         drug.setDrugName("test");
         drug.setDrugCategory(DrugCategory.ANALGESIC);
@@ -57,7 +57,7 @@ public class DrugRepositoryTest {
     }
 
     @Test
-    public void testThatCanSaveTwoAndFindOneById(){
+    void testThatCanSaveTwoAndFindOneById(){
         Drug drug = new Drug();
         drug.setDrugName("test");
         drug.setDrugCategory(DrugCategory.ANALGESIC);
@@ -83,7 +83,7 @@ public class DrugRepositoryTest {
     }
 
     @Test
-    public void testThatCanDeleteById(){
+    void testThatCanDeleteById(){
         Drug drug = new Drug();
         drug.setDrugName("test");
         drug.setDrugCategory(DrugCategory.ANALGESIC);
@@ -103,7 +103,7 @@ public class DrugRepositoryTest {
     }
 
     @Test
-    public void testThatCanDIndAllDrugs(){
+    void testThatCanDIndAllDrugs(){
 
         Drug drug = new Drug();
         drug.setDrugName("test");
@@ -131,7 +131,7 @@ public class DrugRepositoryTest {
     }
 
     @Test
-    public void testThatCanRemoveAllDrugs(){
+    void testThatCanRemoveAllDrugs(){
         Drug drug = new Drug();
         drug.setDrugName("test");
         drug.setDrugCategory(DrugCategory.ANALGESIC);
@@ -160,6 +160,27 @@ public class DrugRepositoryTest {
 
         allDrugs = drugRepository.findAll();
         assertEquals(0, allDrugs.size());
+    }
+
+    @Test
+    void testThatAlreadySavedDrugWillBeUpdated(){
+        Drug drug = new Drug();
+        drug.setDrugName("test");
+        drug.setDrugCategory(DrugCategory.ANALGESIC);
+        drug.setDrugtype(DrugType.INJECTION);
+        drug.setExpiryDate(Date.valueOf(LocalDate.now().plusDays(1)));
+        drug.setManufactureDate(Date.valueOf(LocalDate.now().minusDays(2)));
+        drug.setQuantity(2);
+        Drug savedDrug = drugRepository.save(drug);
+        assertEquals(1, drugRepository.findAll().size());
+        savedDrug.setDrugCategory(DrugCategory.ANTIDEPRESSANT);
+
+        Drug updated = drugRepository.save(savedDrug);
+        assertEquals(1, drugRepository.findAll().size());
+
+
+
+
     }
 
 
