@@ -2,10 +2,12 @@ package com.pharmacy.data.repositories;
 
 import com.pharmacy.data.models.Prescription;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class MockPrescriptionRepository implements PrescriptionRepository {
-    private final List<Prescription> store = new ArrayList<>();
+    private List<Prescription> store = new ArrayList<>();
     private int counter = 1;
 
     @Override
@@ -13,23 +15,46 @@ public class MockPrescriptionRepository implements PrescriptionRepository {
         if (prescription.getPrescriptionId() == 0) {
             prescription.setPrescriptionId(counter++);
         }
-        // Replace if already exists
-        store.removeIf(p -> p.getPrescriptionId() == prescription.getPrescriptionId());
+
+        Prescription toRemove = null;
+        for (Prescription p : store) {
+            if (p.getPrescriptionId() == prescription.getPrescriptionId()) {
+                toRemove = p;
+                break;
+            }
+        }
+        if (toRemove != null) {
+            store.remove(toRemove);
+        }
+
         store.add(prescription);
         return prescription;
     }
 
     @Override
     public Optional<Prescription> findById(int id) {
-        return store.stream()
-                .filter(p -> p.getPrescriptionId() == id)
-                .findFirst();
+        for (Prescription p : store) {
+            if (p.getPrescriptionId() == id) {
+                return Optional.of(p);
+            }
+        }
+        return Optional.empty();
     }
 
     @Override
     public int deleteById(int id) {
-        boolean removed = store.removeIf(p -> p.getPrescriptionId() == id);
-        return removed ? 1 : 0;
+        Prescription toRemove = null;
+        for (Prescription p : store) {
+            if (p.getPrescriptionId() == id) {
+                toRemove = p;
+                break;
+            }
+        }
+        if (toRemove != null) {
+            store.remove(toRemove);
+            return 1;
+        }
+        return 0;
     }
 
     @Override

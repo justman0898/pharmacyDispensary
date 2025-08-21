@@ -10,17 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PharmacistServiceImpl implements PharmacistService {
-    private final PrescriptionRepository prescriptionRepository;
-    private final List<Pharmacist> pharmacists = new ArrayList<>();
-    private final List<Prescription> dispensedPrescriptions = new ArrayList<>();
-    private boolean loggedIn = false;
+    private PrescriptionRepository prescriptionRepository;
+    private List<Pharmacist> pharmacists = new ArrayList<>();
+    private  List<Prescription> dispensedPrescriptions = new ArrayList<>();
+    private boolean loggedIn;
     private int currentPharmacistId;
 
-    public PharmacistServiceImpl(PrescriptionRepository prescriptionRepository) {
+    public PharmacistServiceImpl(PrescriptionRepository prescriptionRepository, List<Pharmacist> pharmacists) {
         this.prescriptionRepository = prescriptionRepository;
-
-        pharmacists.add(new Pharmacist(1, "John Doe", "password123"));
-        pharmacists.add(new Pharmacist(2, "Jane Smith", "securePass"));
+        this.pharmacists = pharmacists;
     }
 
     @Override
@@ -38,15 +36,16 @@ public class PharmacistServiceImpl implements PharmacistService {
 
     @Override
     public Prescription verifyPrescription(int prescriptionId) {
-        if (!loggedIn) throw new InvalidDetailsException("Pharcist is not logged in");
+        if (!loggedIn) throw new InvalidDetailsException("Pharmacist is not logged in");
         return prescriptionRepository.findById(prescriptionId)
-                .orElseThrow(() -> new InvalidDetailsException(""));
+                .orElseThrow(() -> new InvalidDetailsException("Prescription not found"));
     }
 
     @Override
     public Prescription dispensePrescription(int prescriptionId) {
         Prescription prescription = verifyPrescription(prescriptionId);
         prescription.setResolved(true);
+        prescription.setPrescriptionId(currentPharmacistId);
         prescriptionRepository.save(prescription);
 
         dispensedPrescriptions.add(prescription);
@@ -55,9 +54,10 @@ public class PharmacistServiceImpl implements PharmacistService {
 
     @Override
     public List<Prescription> viewDispensedHistory(int pharmacistId) {
+        List<Prescription> allPrescriptions = prescriptionRepository.findAll();
         List<Prescription> history = new ArrayList<>();
-        for (Prescription prescription : dispensedPrescriptions) {
-            history.add(prescription);
+        for (Prescription prescription : allPrescriptions) {
+            if (prescription.isResolved()) history.add(prescription);
         }
         return history;
     }
