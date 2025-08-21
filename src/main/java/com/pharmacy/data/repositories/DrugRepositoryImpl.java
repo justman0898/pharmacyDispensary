@@ -3,12 +3,10 @@ package com.pharmacy.data.repositories;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import com.pharmacy.config.DataSourceConfig;
 import com.pharmacy.data.models.Drug;
-import com.pharmacy.data.models.DrugCategory;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-import java.beans.BeanDescriptor;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +16,7 @@ public class DrugRepositoryImpl implements DrugRepository {
     private int count;
 
     public DrugRepositoryImpl() {
-        this.queryRunner = new QueryRunner(DataSourceConfig.createDataSource());
+        this.queryRunner = new QueryRunner(DataSourceConfig.createDrugDataSource());
     }
 
     public DrugRepositoryImpl(MysqlDataSource db) {

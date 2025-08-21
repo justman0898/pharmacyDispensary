@@ -4,8 +4,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import com.pharmacy.data.models.Drug;
 import com.pharmacy.data.models.DrugCategory;
 import com.pharmacy.data.models.DrugType;
-import com.pharmacy.data.repositories.DrugRepository;
-import com.pharmacy.data.repositories.DrugRepositoryImpl;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MySQLContainer;
@@ -52,7 +51,6 @@ public class DrugRepositoryTest {
         Drug savedDrug = drugRepository.save(drug);
 
         Optional<Drug> foundDrug = drugRepository.findById(savedDrug.getDrugId());
-        assertNotNull(foundDrug);
         foundDrug.ifPresent(value -> assertEquals("test", value.getDrugName()));
     }
 
@@ -177,10 +175,6 @@ public class DrugRepositoryTest {
 
         Drug updated = drugRepository.save(savedDrug);
         assertEquals(1, drugRepository.findAll().size());
-
-
-
-
     }
 
 
