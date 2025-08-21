@@ -41,16 +41,16 @@ public class AddDrugRequest {
         this.drugCategory = drugCategory;
     }
 
-    public LocalDate getDateCreated() {
-        return dateCreated.toLocalDate();
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public LocalDate getExpiryDate() {
-        return expiryDate.toLocalDate();
+    public Date getExpiryDate() {
+        return expiryDate;
     }
 
     public void setExpiryDate(Date expiryDate) {
@@ -65,8 +65,8 @@ public class AddDrugRequest {
         this.quantity = quantity;
     }
 
-    public LocalDate getManufactureDate() {
-        return manufactureDate.toLocalDate();
+    public Date getManufactureDate() {
+        return manufactureDate;
     }
 
     public void setManufactureDate(Date manufactureDate) {
