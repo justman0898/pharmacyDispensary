@@ -13,3 +13,4 @@ public interface PrescriptionRepository {
     List<Prescription> findAll();
     void deleteAll();
 }
+
