@@ -1,17 +1,17 @@
 package com.pharmacy.utils;
 
 import com.pharmacy.data.models.User;
+import com.pharmacy.dtos.UserResponse;
 import com.pharmacy.dtos.requests.AddUserRequest;
 
 public class UserMapper {
 
-    public static AddUserRequest toAddUserRequest(AddUserRequest addUserRequest) {
-
-        AddUserRequest response = new AddUserRequest();
-        response.setUserName(addUserRequest.getUserName());
-        response.setPassword(addUserRequest.getPassword());
+    public static UserResponse toResponse(User user) {
+        UserResponse response = new UserResponse();
+        response.setUsername(user.getUserName());
+        response.setPassword(user.getPassword());
+        response.setRole(user.getRole().toString());
         return response;
-
     }
 
     public static User toEntity(AddUserRequest addUserRequest) {
