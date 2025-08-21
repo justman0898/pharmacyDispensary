@@ -2,8 +2,12 @@ package com.pharmacy.services;
 
 import com.pharmacy.data.models.User;
 import com.pharmacy.data.repositories.UserRepository;
+import com.pharmacy.dtos.UserResponse;
 import com.pharmacy.dtos.requests.AddUserRequest;
+import com.pharmacy.exceptions.UserNotFoundException;
 import com.pharmacy.utils.UserMapper;
+
+import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
@@ -13,23 +17,18 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    @Override
-    public AddUserRequest addUser(AddUserRequest addUserRequest);
-    User user = UserMapper.toEntity(UserM);
 
 
     @Override
-    public void addDoctor(AddUserRequest userRequest) {
-
+    public UserResponse signUp(AddUserRequest loginRequest) {
+        User user = userRepository.save(UserMapper.toEntity(loginRequest));
+        return UserMapper.toResponse(user);
     }
 
     @Override
-    public void addPharmacist(AddUserRequest userRequest) {
-
-    }
-
-    @Override
-    public String loginResponse(AddUserRequest loginRequest) {
-        return "";
+    public UserResponse login(AddUserRequest loginRequest) {
+        Optional<User> user = userRepository.findByUsernameAndPassword(loginRequest.getUserName(), loginRequest.getPassword());
+        User foundUser = user.orElseThrow(()-> new UserNotFoundException("User not found"));
+        return UserMapper.toResponse(foundUser);
     }
 }

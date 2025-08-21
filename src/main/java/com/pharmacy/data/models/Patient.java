@@ -13,8 +13,7 @@ public class Patient {
     private String medicalCondition;
     private Gender gender;
     private java.sql.Date dateCreated = Date.valueOf(LocalDate.now());
-
-    public int getPatientId() {
+   public int getPatientId() {
         return patientId;
     }
 
