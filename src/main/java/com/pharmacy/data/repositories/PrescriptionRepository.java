@@ -12,5 +12,6 @@ public interface PrescriptionRepository {
     int deleteById(int id);
     List<Prescription> findAll();
     void deleteAll();
+    List<Prescription> findUnresolvedPrescriptions();
 }
 
