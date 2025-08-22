@@ -3,15 +3,18 @@ package com.pharmacy.services;
 import com.pharmacy.data.models.Pharmacist;
 import com.pharmacy.data.models.Prescription;
 import com.pharmacy.data.repositories.PrescriptionRepository;
+import com.pharmacy.dtos.responses.AddPrescriptionResponse;
 import com.pharmacy.exceptions.InvalidDetailsException;
-import com.pharmacy.exceptions.InvalidDrugQuantityException;
+import com.pharmacy.exceptions.InvalidPrescriptionException;
+import com.pharmacy.utils.PrescriptionDrugMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PharmacistServiceImpl implements PharmacistService {
     private PrescriptionRepository prescriptionRepository;
-    private List<Pharmacist> pharmacists = new ArrayList<>();
+    private List<Pharmacist> pharmacists;
     private  List<Prescription> dispensedPrescriptions = new ArrayList<>();
     private boolean loggedIn;
     private int currentPharmacistId;
@@ -38,7 +41,7 @@ public class PharmacistServiceImpl implements PharmacistService {
     public Prescription verifyPrescription(int prescriptionId) {
         if (!loggedIn) throw new InvalidDetailsException("Pharmacist is not logged in");
         return prescriptionRepository.findById(prescriptionId)
-                .orElseThrow(() -> new InvalidDetailsException("Prescription not found"));
+                .orElseThrow(() -> new InvalidPrescriptionException("Prescription not found"));
     }
 
     @Override
@@ -53,12 +56,17 @@ public class PharmacistServiceImpl implements PharmacistService {
     }
 
     @Override
-    public List<Prescription> viewDispensedHistory(int pharmacistId) {
-        List<Prescription> allPrescriptions = prescriptionRepository.findAll();
-        List<Prescription> history = new ArrayList<>();
-        for (Prescription prescription : allPrescriptions) {
-            if (prescription.isResolved()) history.add(prescription);
-        }
-        return history;
+    public List<AddPrescriptionResponse> viewDispensedHistory() {
+        return prescriptionRepository.findAll().stream()
+                .filter(prescription -> !prescription.isResolved())
+                .map(PrescriptionDrugMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AddPrescriptionResponse> viewUnresolvedHistory() {
+        return prescriptionRepository.findUnresolvedPrescriptions().stream()
+                .map(PrescriptionDrugMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }
