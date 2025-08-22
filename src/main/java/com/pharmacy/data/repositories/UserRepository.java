@@ -11,5 +11,5 @@ public interface UserRepository {
     void delete(User user);
     Optional<User> findByUsernameAndPassword(String username, String password);
     List<User> findAll();
-
+    int checkIfUserExists(String username);
 }

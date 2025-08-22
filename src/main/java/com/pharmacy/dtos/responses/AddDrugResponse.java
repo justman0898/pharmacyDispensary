@@ -1,7 +1,5 @@
 package com.pharmacy.dtos.responses;
 
-import com.pharmacy.data.models.DrugCategory;
-import com.pharmacy.data.models.DrugType;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -9,8 +7,8 @@ import java.time.LocalDate;
 public class AddDrugResponse {
     private int drugId;
     private String drugName;
-    private DrugCategory drugCategory;
-    private DrugType drugType;
+    private String drugCategory;
+    private String drugType;
     private java.sql.Date expiryDate;
     private java.sql.Date dateCreated = Date.valueOf(LocalDate.now());
     private java.sql.Date manufactureDate;
@@ -31,11 +29,25 @@ public class AddDrugResponse {
         this.drugName = drugName;
     }
 
-    public DrugType getDrugType() {return drugType; }
+    public String getDrugCategory() {
+        return drugCategory;
+    }
 
-    public void setDrugType(DrugType drugType) { this.drugType = drugType; }
+    public void setDrugCategory(String drugCategory) {
+        this.drugCategory = drugCategory;
+    }
 
-    public Date getExpiryDate() { return expiryDate; }
+    public String getDrugtype() {
+        return drugType;
+    }
+
+    public void setDrugtype(String drugType) {
+        this.drugType = drugType;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
 
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
@@ -64,14 +76,5 @@ public class AddDrugResponse {
     public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
-
-    public DrugCategory getDrugCategory() {
-        return drugCategory;
-    }
-
-    public void setDrugCategory(DrugCategory drugCategory) {
-        this.drugCategory = drugCategory;
-    }
-
 }
 

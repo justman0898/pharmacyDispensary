@@ -6,10 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DoctorsMainMenu extends JFrame {
-
+    private DoctorControllerUtils doctorControllerUtils = new DoctorControllerUtils();
     public DoctorsMainMenu() {
 
-        setTitle("Welcome Doctors");
+        setTitle("Welcome Doctor");
         setSize(300, 150);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -29,7 +29,7 @@ public class DoctorsMainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: open LoginForm JFrame
-
+                doctorControllerUtils.prescribeDrugs();
 
             }
         });
@@ -38,6 +38,7 @@ public class DoctorsMainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: open SignUpForm JFrame
+                doctorControllerUtils.viewAllPrescriptions();
             }
         });
 

@@ -11,13 +11,14 @@ public class AddPrescriptionRequest {
     private int doctorId;
     private String doctorName;
     private String diagnosis;
-    private List<Drug> drugsPrescribed;
+    private List<AddPrescriptionDrugRequest> drugsPrescribed;
 
     public int getPatientId() {
         return patientId;
     }
 
     public void setPatientId(int patientId) {
+
         this.patientId = patientId;
     }
 
@@ -53,11 +54,11 @@ public class AddPrescriptionRequest {
         this.diagnosis = diagnosis;
     }
 
-    public List<Drug> getDrugsPrescribed() {
+    public List<AddPrescriptionDrugRequest> getDrugsPrescribed() {
         return drugsPrescribed;
     }
 
-    public void setDrugsPrescribed(List<Drug> drugsPrescribed) {
+    public void setDrugsPrescribed(List<AddPrescriptionDrugRequest> drugsPrescribed) {
         this.drugsPrescribed = drugsPrescribed;
     }
 }

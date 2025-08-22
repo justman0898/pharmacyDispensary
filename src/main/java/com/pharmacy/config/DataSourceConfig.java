@@ -19,4 +19,12 @@ public class DataSourceConfig {
         dataSource.setPassword("Katherinemylove1&");
         return dataSource;
     }
+
+    public static MysqlDataSource createUserDataSource() {
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setURL("jdbc:mysql://localhost:3306/");
+        dataSource.setUser("root");
+        dataSource.setPassword("Katherinemylove1&");
+        return dataSource;
+    }
 }
