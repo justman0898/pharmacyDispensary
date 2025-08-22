@@ -1,6 +1,6 @@
 package com.pharmacy.services;
 
-import com.pharmacy.dtos.UserResponse;
+import com.pharmacy.dtos.responses.UserResponse;
 import com.pharmacy.dtos.requests.AddUserRequest;
 
 

@@ -2,7 +2,7 @@ package com.pharmacy.services;
 
 import com.pharmacy.data.models.User;
 import com.pharmacy.data.repositories.UserRepository;
-import com.pharmacy.dtos.UserResponse;
+import com.pharmacy.dtos.responses.UserResponse;
 import com.pharmacy.dtos.requests.AddUserRequest;
 import com.pharmacy.exceptions.UserNotFoundException;
 import com.pharmacy.utils.UserMapper;
@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse signUp(AddUserRequest loginRequest) {
+        checkIfUserExists(loginRequest.getUserName());
         User user = userRepository.save(UserMapper.toEntity(loginRequest));
         return UserMapper.toResponse(user);
     }
@@ -30,5 +31,12 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findByUsernameAndPassword(loginRequest.getUserName(), loginRequest.getPassword());
         User foundUser = user.orElseThrow(()-> new UserNotFoundException("User not found"));
         return UserMapper.toResponse(foundUser);
+    }
+
+    private void checkIfUserExists(String username) {
+        int user = userRepository.checkIfUserExists(username);
+        if (user != 0) {
+            throw new RuntimeException("User already exists");
+        }
     }
 }

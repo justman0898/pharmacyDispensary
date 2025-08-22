@@ -88,4 +88,12 @@ public class AddPrescriptionResponse {
     public void setResolved(boolean resolved) {
         isResolved = resolved;
     }
+
+
+
+
+    @Override
+    public String toString() {
+        return "Prescription Id: "+ getPrescriptionId()+ "\nPatient Id: "+getPatientId()+"\nPatient Name: "+getPatientName()+"\nDoctor Id: "+getDoctorId()+"\nDoctor Name: "+getDoctorName()+"\nDiagnosis: "+getDiagnosis()+"\nDrugs: "+getDrugsPrescribed();
+    }
 }

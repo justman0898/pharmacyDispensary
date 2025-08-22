@@ -1,20 +1,16 @@
 package com.pharmacy.data.models;
 
 public class User {
-    private String userId;
+    private int userId;
     private String userName;
-    private String password;
+    private String userPassword;
     private Role role;
 
 
 
     public User(){}
 
-    public User(String userId, String userName, String hashPassword){
-        this.userId = userId;
-        this.userName = userName;
-        this.password = hashPassword;
-    }
+
 
     public Role getRole() {
         return role;
@@ -32,20 +28,20 @@ public class User {
         this.userName = userName;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
 }
