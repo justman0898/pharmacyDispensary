@@ -8,7 +8,7 @@ public class AddDrugResponse {
     private int drugId;
     private String drugName;
     private String drugCategory;
-    private String drugtype;
+    private String drugType;
     private java.sql.Date expiryDate;
     private java.sql.Date dateCreated = Date.valueOf(LocalDate.now());
     private java.sql.Date manufactureDate;
@@ -38,11 +38,11 @@ public class AddDrugResponse {
     }
 
     public String getDrugtype() {
-        return drugtype;
+        return drugType;
     }
 
-    public void setDrugtype(String drugtype) {
-        this.drugtype = drugtype;
+    public void setDrugtype(String drugType) {
+        this.drugType = drugType;
     }
 
     public Date getExpiryDate() {
