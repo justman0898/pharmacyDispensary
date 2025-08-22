@@ -22,6 +22,11 @@ public class Mapper {
         AddDrugResponse addDrugResponse =  new AddDrugResponse();
         addDrugResponse.setDrugId(savedDrug.getDrugId());
         addDrugResponse.setDrugName(savedDrug.getDrugName());
+        addDrugResponse.setDrugType(savedDrug.getDrugtype());
+        addDrugResponse.setQuantity(savedDrug.getQuantity());
+        addDrugResponse.setDrugCategory(savedDrug.getDrugCategory());
+        addDrugResponse.setDateCreated(savedDrug.getDateCreated());
+        addDrugResponse.setExpiryDate(savedDrug.getExpiryDate());
         return addDrugResponse;
     }
 

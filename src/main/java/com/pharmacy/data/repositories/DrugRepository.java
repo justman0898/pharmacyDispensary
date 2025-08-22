@@ -13,5 +13,4 @@ public interface DrugRepository {
     Optional<Drug>  findById(int id);
     List<Drug> findAll();
 
-
 }

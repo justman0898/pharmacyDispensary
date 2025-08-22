@@ -46,7 +46,7 @@ public class Drug {
         this.drugtype = drugtype;
     }
 
-    public LocalDate getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate.toLocalDate();
     }
 
@@ -54,7 +54,7 @@ public class Drug {
         this.expiryDate = expiryDate;
     }
 
-    public LocalDate getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated.toLocalDate();
     }
 
@@ -70,7 +70,7 @@ public class Drug {
         this.quantity = quantity;
     }
 
-    public LocalDate getManufactureDate() {
+    public Date getManufactureDate() {
         return manufactureDate.toLocalDate();
     }
 

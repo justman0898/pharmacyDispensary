@@ -112,7 +112,7 @@ public class DrugServiceImpl implements DrugService{
                AvailableDrugResponse availableDrugResponse = new AvailableDrugResponse();
                availableDrugResponse.setName(drug.getDrugName());
                availableDrugResponse.setQuantity((int) drug.getQuantity());
-               availableDrugResponse.isExpired(drug.getExpiryDate());
+               availableDrugResponse.isExpired(drug.getExpiryDate().toLocalDate());
                availableDrugs.add(availableDrugResponse);
            }
        }
