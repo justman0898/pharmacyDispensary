@@ -1,10 +1,13 @@
 package com.pharmacy.dtos.requests;
 
+import com.pharmacy.data.models.Role;
+
 public class AddUserRequest {
 
 
     private String userName;
     private String password;
+    private String role;
 
 
 
@@ -22,5 +25,13 @@ public class AddUserRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

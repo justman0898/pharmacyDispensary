@@ -1,5 +1,12 @@
 package com.pharmacy.utils;
 
+import com.pharmacy.data.repositories.UserRepository;
+import com.pharmacy.data.repositories.UserRepositoryImpl;
+import com.pharmacy.dtos.requests.AddUserRequest;
+import com.pharmacy.dtos.responses.UserResponse;
+import com.pharmacy.services.UserService;
+import com.pharmacy.services.UserServiceImpl;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +18,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class ChoiceForm extends JFrame {
-
+    UserRepository repo;
+    UserService userService = new UserServiceImpl(new UserRepositoryImpl());
     public ChoiceForm() {
 
         setTitle("Welcome");
@@ -34,7 +42,8 @@ public class ChoiceForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: open LoginForm JFrame
-                new Tools();
+                new Tools().setVisible(true);
+                ((JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource())).dispose();
 
             }
         });
@@ -43,6 +52,20 @@ public class ChoiceForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: open SignUpForm JFrame
+                try {
+                    AddUserRequest newUser = UserSignUp.signUp();
+                    UserResponse response = userService.signUp(newUser);
+                    DoctorControllerUtils.print(response.toString());
+                    ((JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource())).dispose();
+                    new Tools().setVisible(true);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(ChoiceForm.this, "Login failed: " + ex.getMessage());
+
+                    ChoiceForm.this.dispose();
+
+                    new ChoiceForm().setVisible(true);
+                }
+
             }
         });
 
@@ -50,9 +73,7 @@ public class ChoiceForm extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new ChoiceForm();
-    }
+
 }
 
 

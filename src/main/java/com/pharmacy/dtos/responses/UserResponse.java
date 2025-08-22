@@ -1,7 +1,7 @@
-package com.pharmacy.dtos;
+package com.pharmacy.dtos.responses;
 
 public class UserResponse {
-
+    private int id;
     private String username;
     private String password;
     private String role;
@@ -28,5 +28,13 @@ public class UserResponse {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

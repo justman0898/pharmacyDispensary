@@ -1,9 +1,15 @@
 package com.pharmacy.utils;
 
+import com.pharmacy.data.models.Drug;
 import com.pharmacy.data.models.Patient;
 import com.pharmacy.data.models.Prescription;
+import com.pharmacy.dtos.requests.AddDrugRequest;
+import com.pharmacy.dtos.requests.AddPrescriptionDrugRequest;
 import com.pharmacy.dtos.requests.AddPrescriptionRequest;
 import com.pharmacy.dtos.responses.AddPrescriptionResponse;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DoctorMapper {
 
@@ -23,17 +29,19 @@ public class DoctorMapper {
 
     }
 
-    public static AddPrescriptionRequest toEntity(Prescription prescribe) {
-        AddPrescriptionRequest entity = new AddPrescriptionRequest();
-
-       entity.setPatientId(prescribe.getPatientId());
-       entity.setPatientName(prescribe.getPatientName());
-       entity.setDiagnosis(prescribe.getDiagnosis());
-       entity.setDoctorId(prescribe.getDoctorId());
-       entity.setDiagnosis(prescribe.getDiagnosis());
-       entity.setDrugsPrescribed(prescribe.getDrugsPrescribed());
-
-       return entity;
+    public static Prescription toEntity(AddPrescriptionRequest prescribe) {
+        Prescription prescription = new Prescription();
+        prescription.setPatientId(prescribe.getPatientId());
+        prescription.setDoctorId(prescribe.getDoctorId());
+        prescription.setPatientName(prescribe.getPatientName());
+        prescription.setDiagnosis(prescribe.getDiagnosis());
+        prescription.setDoctorName(prescribe.getDoctorName());
+        List<AddPrescriptionDrugRequest> drugRequests = prescribe.getDrugsPrescribed();
+        List<Drug> drugs = drugRequests.stream()
+                .map(PrescriptionDrugMapper::toEntity)
+                .collect(Collectors.toList());
+        prescription.setDrugsPrescribed(drugs);
+        return prescription;
 
     }
 
