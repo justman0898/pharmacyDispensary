@@ -6,12 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DoctorsMainMenu extends JFrame {
-    private DoctorControllerUtils doctorControllerUtils = new DoctorControllerUtils();
+    private final DoctorControllerUtils doctorControllerUtils = new DoctorControllerUtils();
     public DoctorsMainMenu() {
 
         setTitle("Welcome Doctor");
         setSize(300, 150);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
 
@@ -19,13 +19,16 @@ public class DoctorsMainMenu extends JFrame {
         panel.setLayout(new GridLayout(2, 1, 10, 10));
 
 
-        JButton loginButton = new JButton("Prescribe Drug");
+        JButton presribeButton = new JButton("Prescribe Drug");
         JButton signupButton = new JButton("View All Prescriptions");
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setPreferredSize(new Dimension(20, 10));
 
-        panel.add(loginButton);
+        panel.add(presribeButton);
         panel.add(signupButton);
+        panel.add(logoutButton);
 
-        loginButton.addActionListener(new ActionListener() {
+        presribeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: open LoginForm JFrame
@@ -39,11 +42,22 @@ public class DoctorsMainMenu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // TODO: open SignUpForm JFrame
                 doctorControllerUtils.viewAllPrescriptions();
+
+            }
+        });
+
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO: open ChoiceForm
+                new ChoiceForm();
+                dispose();
             }
         });
 
         add(panel);
         setVisible(true);
+
 
     }
 }

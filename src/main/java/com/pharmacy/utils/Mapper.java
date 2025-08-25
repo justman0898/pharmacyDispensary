@@ -22,7 +22,7 @@ public class Mapper {
         AddDrugResponse addDrugResponse =  new AddDrugResponse();
         addDrugResponse.setDrugId(savedDrug.getDrugId());
         addDrugResponse.setDrugName(savedDrug.getDrugName());
-        addDrugResponse.setDrugtype(savedDrug.getDrugtype().toString());
+        addDrugResponse.setDrugType(savedDrug.getDrugtype().toString());
         addDrugResponse.setQuantity(savedDrug.getQuantity());
         addDrugResponse.setDrugCategory(savedDrug.getDrugCategory().toString());
         addDrugResponse.setDateCreated(savedDrug.getDateCreated());

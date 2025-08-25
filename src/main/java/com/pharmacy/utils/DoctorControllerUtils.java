@@ -1,8 +1,9 @@
 package com.pharmacy.utils;
 
-import com.pharmacy.dtos.requests.AddDrugRequest;
-import com.pharmacy.dtos.requests.AddPrescriptionDrugRequest;
-import com.pharmacy.dtos.requests.AddPrescriptionRequest;
+import com.pharmacy.data.repositories.DrugRepositoryImpl;
+import com.pharmacy.data.repositories.PrescriptionRepository;
+import com.pharmacy.data.repositories.PrescriptionRepositoryImpl;
+
 import com.pharmacy.dtos.responses.AddDrugResponse;
 import com.pharmacy.dtos.responses.AddPrescriptionResponse;
 import com.pharmacy.services.DoctorService;
@@ -12,8 +13,11 @@ import javax.swing.*;
 import java.util.List;
 import java.util.Objects;
 
+
 public class DoctorControllerUtils {
-    DoctorService doctorService = new DoctorServiceImpl();
+    private final PrescriptionRepository prescriptionRepository = new PrescriptionRepositoryImpl();
+    private final DrugRepositoryImpl drugRepository = new DrugRepositoryImpl();
+    private final DoctorService doctorService = new DoctorServiceImpl(prescriptionRepository, drugRepository);
 
     public static void print(String msg) {
 
@@ -34,32 +38,23 @@ public class DoctorControllerUtils {
         return value;    }
 
     public void prescribeDrugs(){
-
-        AddPrescriptionRequest req = new AddPrescriptionRequest();
         try {
-            req.setPatientId(Integer.parseInt(Objects.requireNonNull(input("Please input patient id: "))));
-            req.setPatientName(input("Please input patient name: "));
-            req.setDoctorId(Integer.parseInt(Objects.requireNonNull(input("Please input doctor id: "))));
-            req.setDoctorName(input("Please input doctor name: "));
-            req.setDiagnosis(input("Please input diagnosis: "));
-            List<AddDrugResponse> drugChoices = doctorService.drugList();
-            ButtonUtils form = new ButtonUtils(drugChoices);
-            form.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosed(java.awt.event.WindowEvent e) {
-                    List<AddPrescriptionDrugRequest> prescribedDrugs = form.getSelectedItems();
-                    req.setDrugsPrescribed(prescribedDrugs);
-                    doctorService.createPrescription(req);
-                }
-            });
-        }catch (Exception e){
+            List<AddDrugResponse> options = doctorService.drugList();
+            new AddPrescriptionForm(options, doctorService::createPrescription);
+        }catch (Exception e) {
             print(e.getMessage());
         }
     }
 
     public  void viewAllPrescriptions(){
-        List<AddPrescriptionResponse> prescriptions =  doctorService.viewPrescriptions();
-        new PrescriptionViewer(prescriptions);
+        try {
+            List<AddPrescriptionResponse> prescriptions = doctorService.viewPrescriptions(Integer.parseInt(Objects.requireNonNull(input("Please Enter your Id"))));
+
+            new PrescriptionViewer(prescriptions);
+       } catch (Exception e) {
+            print(e.getMessage());
+           new DoctorsMainMenu();
+        }
     }
 
 

@@ -66,4 +66,15 @@ public class MockPrescriptionRepository implements PrescriptionRepository {
     public void deleteAll() {
         store.clear();
     }
+
+
+    @Override
+    public List<Prescription> findPrescriptionByDocId(int docId) {
+        return List.of();
+    }
+
+    @Override
+    public List<Prescription> findUnResolvedPrescriptions() {
+        return List.of();
+    }
 }

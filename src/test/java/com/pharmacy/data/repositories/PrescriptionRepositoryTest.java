@@ -198,9 +198,36 @@ public class PrescriptionRepositoryTest {
         assertEquals(2, foundPrescription.get().getDrugsPrescribed().size());
     }
 
+    @Test
+    void test() {
+        Prescription prescription = new Prescription();
+        prescription.setDiagnosis("Diagnosis");
+
+        Prescription prescription2 = new Prescription();
+        prescription2.setDiagnosis("Diagnosis2");
+
+        Drug drug1 = new Drug();
+        drug1.setDrugId(1);
+        drug1.setDrugName("drug1");
+
+        List<Drug> drugs = List.of(drug1);
+        prescription.setDrugsPrescribed(drugs);
+        prescription2.setDrugsPrescribed(drugs);
+
+        prescription.setDoctorId(1);
+        prescription2.setDoctorId(2);
+
+        prescriptionRepository.save(prescription);
+        prescriptionRepository.save(prescription2);
+
+        List<Prescription> prescriptions = prescriptionRepository.findPrescriptionByDocId(1);
+        assertNotNull(prescriptions);
+
+        assertEquals(1, prescriptions.size());
+        assertEquals("Diagnosis", prescriptions.get(0).getDiagnosis());
 
 
-
+    }
 
 
 

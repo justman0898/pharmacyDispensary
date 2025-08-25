@@ -16,11 +16,13 @@ public class PrescriptionViewer extends JFrame {
         this.prescriptions = prescriptions;
 
         setTitle("Prescription List");
-        setSize(200, 200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setSize(500, 250);
 
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
         showPrescriptionList();
+        setVisible(true);
     }
 
     private void showPrescriptionList() {
@@ -38,24 +40,35 @@ public class PrescriptionViewer extends JFrame {
 
         revalidate();
         repaint();
-        setVisible(true);
+        pack();
     }
 
     private void showPrescriptionDetails(AddPrescriptionResponse prescription) {
         getContentPane().removeAll();
 
+        JPanel detailsPanel = new JPanel();
+        detailsPanel.setLayout(new BorderLayout(10, 10));
+
         JTextArea textArea = new JTextArea(prescription.toString());
         textArea.setEditable(false);
 
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        detailsPanel.add(scrollPane, BorderLayout.CENTER);
+
+
         JButton closeBtn = new JButton("Close");
-        closeBtn.addActionListener(e -> showPrescriptionList());
+        closeBtn.addActionListener(e -> {
+            getContentPane().removeAll();
+            showPrescriptionList();
+        });
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.add(closeBtn);
+        detailsPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-        add(new JScrollPane(textArea), BorderLayout.CENTER);
-        add(bottomPanel, BorderLayout.SOUTH);
-
+        add(detailsPanel, BorderLayout.CENTER);
+        setPreferredSize(new Dimension(400, 200));
+        pack();
         revalidate();
         repaint();
     }

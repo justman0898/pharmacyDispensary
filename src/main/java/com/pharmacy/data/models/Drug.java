@@ -1,80 +1,40 @@
 package com.pharmacy.data.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.sql.Date;
 import java.time.LocalDate;
 
+@Setter
 public class Drug {
 
+    @Getter
     private int drugId;
+    @Getter
     private String drugName;
     private DrugCategory drugCategory;
     private DrugType drugtype;
+    @Getter
     private java.sql.Date expiryDate;
+    @Getter
     private java.sql.Date dateCreated = Date.valueOf(LocalDate.now());
+    @Getter
     private java.sql.Date manufactureDate;
+    @Getter
     private long quantity;
 
-    public int getDrugId() {
-        return drugId;
-    }
-
-    public void setDrugId(int drugId) {
-        this.drugId = drugId;
-    }
-
-    public String getDrugName() {
-        return drugName;
-    }
-
-    public void setDrugName(String drugName) {
-        this.drugName = drugName;
-    }
-
     public DrugCategory getDrugCategory() {
-        return drugCategory;
-    }
-
-    public void setDrugCategory(DrugCategory drugCategory) {
-        this.drugCategory = drugCategory;
+        return drugCategory != null ? drugCategory : DrugCategory.UNKNOWN;
     }
 
     public DrugType getDrugtype() {
-        return drugtype;
+        return drugtype != null ? drugtype : DrugType.UNKNOWN;
     }
 
-    public void setDrugtype(DrugType drugtype) {
-        this.drugtype = drugtype;
+    @Override
+    public String toString() {
+        return "Drug Id: " + getDrugId()+"\n"+getDrugName()+"\nCategory: "+getDrugCategory()+"\nType: "+getDrugtype()+"\nExpiry Date: "+getExpiryDate()+"\nDate Added To Record: "+ getDateCreated();
     }
 
-    public Date getExpiryDate() {
-        return expiryDate.toLocalDate();
-    }
-
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated.toLocalDate();
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
-    }
-
-    public Date getManufactureDate() {
-        return manufactureDate.toLocalDate();
-    }
-
-    public void setManufactureDate(Date manufactureDate) {
-        this.manufactureDate = manufactureDate;
-    }
 }

@@ -14,7 +14,7 @@ public class DataSourceConfig {
 
     public static MysqlDataSource createPrescriptionDataSource() {
         MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setURL("jdbc:mysql://localhost:3306/");
+        dataSource.setURL("jdbc:mysql://localhost:3306/pharmacy");
         dataSource.setUser("root");
         dataSource.setPassword("Katherinemylove1&");
         return dataSource;
@@ -22,7 +22,7 @@ public class DataSourceConfig {
 
     public static MysqlDataSource createUserDataSource() {
         MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setURL("jdbc:mysql://localhost:3306/");
+        dataSource.setURL("jdbc:mysql://localhost:3306/pharmacy");
         dataSource.setUser("root");
         dataSource.setPassword("Katherinemylove1&");
         return dataSource;

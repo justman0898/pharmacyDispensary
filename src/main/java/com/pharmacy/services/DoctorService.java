@@ -9,7 +9,7 @@ import java.util.List;
 public interface DoctorService {
 
     AddPrescriptionResponse createPrescription(AddPrescriptionRequest request);
-    List<AddPrescriptionResponse> viewPrescriptions();
+    List<AddPrescriptionResponse> viewPrescriptions(int id);
     List<AddDrugResponse> drugList();
 
 }

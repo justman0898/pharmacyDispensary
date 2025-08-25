@@ -8,6 +8,7 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public class DrugRepositoryImpl implements DrugRepository {
     private int count;
 
     public DrugRepositoryImpl() {
-        this.queryRunner = new QueryRunner(DataSourceConfig.createDrugDataSource());
+        this.queryRunner = new QueryRunner(DataSourceConfig.createUserDataSource());
     }
 
     public DrugRepositoryImpl(MysqlDataSource db) {
@@ -75,8 +76,18 @@ public class DrugRepositoryImpl implements DrugRepository {
     @Override
     public List<Drug> findAll() {
         try {
-            String sql = "SELECT * FROM drugs";
-            return queryRunner.query(sql, new BeanListHandler<>(Drug.class));
+            String sql = "SELECT " +
+                    "drug_id AS drugId, " +
+                    "drug_name AS drugName, " +
+                    "drug_category AS drugCategory, " +
+                    "drug_type AS drugtype, " +
+                    "expiry_date AS expiryDate, " +
+                    "date_created AS dateCreated, " +
+                    "manufacture_date AS manufactureDate, " +
+                    "quantity AS quantity " +
+                    "FROM drugs";
+            List<Drug> drugs = queryRunner.query(sql, new BeanListHandler<>(Drug.class));
+            return drugs == null ? Collections.emptyList() : drugs;
         }catch(SQLException e) {
             throw new RuntimeException(e);
         }
