@@ -1,6 +1,5 @@
 package com.pharmacy.utils;
 
-import com.pharmacy.data.repositories.UserRepository;
 import com.pharmacy.data.repositories.UserRepositoryImpl;
 import com.pharmacy.dtos.requests.AddUserRequest;
 import com.pharmacy.dtos.responses.UserResponse;
@@ -13,18 +12,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 
 public class ChoiceForm extends JFrame {
-    UserRepository repo;
     UserService userService = new UserServiceImpl(new UserRepositoryImpl());
     public ChoiceForm() {
 
         setTitle("Welcome");
         setSize(300, 150);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
 
@@ -53,11 +48,14 @@ public class ChoiceForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // TODO: open SignUpForm JFrame
                 try {
-                    AddUserRequest newUser = UserSignUp.signUp();
-                    UserResponse response = userService.signUp(newUser);
-                    DoctorControllerUtils.print(response.toString());
-                    ((JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource())).dispose();
-                    new Tools().setVisible(true);
+                    new SignUpForm(addUserRequest -> {
+                        UserResponse response = userService.signUp(addUserRequest);
+                        DoctorControllerUtils.print(response.toString());
+                        ((JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource())).dispose();
+                        new Tools().setVisible(true);
+                    }).setVisible(true);
+
+
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(ChoiceForm.this, "Login failed: " + ex.getMessage());
 

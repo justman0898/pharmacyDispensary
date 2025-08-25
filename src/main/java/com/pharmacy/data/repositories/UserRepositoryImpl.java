@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
         try {
-            String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO users (username, userPassword, role) VALUES (?, ?, ?)";
             queryRunner.update(sql, user.getUserName(), user.getUserPassword(), user.getRole().toString());
             return user;
         }catch (SQLException e){
@@ -36,7 +36,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> findByUsernameAndPassword(String username, String password) {
         try {
-            String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+            String sql = "SELECT * FROM users WHERE userName = ? AND userPassword = ?";
             User user = queryRunner.query(sql, new BeanHandler<>(User.class), username, password);
             return Optional.ofNullable(user);
         }catch (SQLException e){
@@ -44,10 +44,10 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    public int checkIfUserExists(String username) {
-        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
+    public long checkIfUserExists(String username) {
+        String sql = "SELECT COUNT(*) FROM users WHERE userPassword = ?";
         try {
-            return queryRunner.query(sql, new ScalarHandler<Integer>(), username);
+            return queryRunner.query(sql, new ScalarHandler<Long>(), username);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

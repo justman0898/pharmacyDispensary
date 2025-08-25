@@ -9,6 +9,7 @@ public interface PharmacistService {
     boolean login(int pharmacistId, String password);
     Prescription verifyPrescription(int prescriptionId);
     Prescription dispensePrescription(int prescriptionId);
-    List<AddPrescriptionResponse> viewDispensedHistory();
-    List<AddPrescriptionResponse> viewUnresolvedHistory();
+    List<Prescription> viewDispensedHistory(int pharmacistId);
+    List<AddPrescriptionResponse>  allPrescriptions();
+    List<AddPrescriptionResponse>  allUnDispensedPrescriptions();
 }

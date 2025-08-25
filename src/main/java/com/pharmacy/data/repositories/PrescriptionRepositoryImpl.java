@@ -4,6 +4,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import com.pharmacy.config.DataSourceConfig;
 import com.pharmacy.data.models.Drug;
 import com.pharmacy.data.models.Prescription;
+import com.pharmacy.dtos.requests.PrescriptionDrug;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -11,7 +12,6 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,7 +49,7 @@ public class PrescriptionRepositoryImpl implements PrescriptionRepository {
                             }
                         });
             }else {
-                prescription.setPrescriptionId(++count);
+                prescription.setPrescriptionId(((int) count())+ 1);
                 String sql = "INSERT INTO prescriptions (prescriptionId, patientId, patientName, doctorId, doctorName, diagnosis, dateCreated, isResolved) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 queryRunner.update(sql, prescription.getPrescriptionId(), prescription.getPatientId(), prescription.getPatientName(), prescription.getDoctorId(), prescription.getDoctorName(), prescription.getDiagnosis(), prescription.getDateCreated(), prescription.isResolved());
 
@@ -100,15 +100,71 @@ public class PrescriptionRepositoryImpl implements PrescriptionRepository {
     @Override
     public List<Prescription> findAll() {
         try {
-            return queryRunner.query("SELECT * FROM prescriptions", new BeanListHandler<>(Prescription.class));
+            List<Prescription> prescriptions =  queryRunner.query("SELECT * FROM prescriptions", new BeanListHandler<>(Prescription.class));
+            String drugSql = "SELECT drugId, quantityPrescribed FROM prescription_drugs WHERE prescriptionId = ?";
+
+            prescriptions.forEach(prescription -> {
+                List<PrescriptionDrug> prescriptionDrugs = null;
+                try {
+                    prescriptionDrugs = queryRunner.query(drugSql, new BeanListHandler<>(PrescriptionDrug.class), prescription.getPrescriptionId());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                getPrescribedDrugs(prescription, prescriptionDrugs);
+            });
+            return prescriptions;
+
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
     }
+
+
 
     @Override
     public void deleteAll() {
 
+    }
+
+
+    @Override
+    public List<Prescription> findPrescriptionByDocId(int docId) {
+        try {
+            String sql = "SELECT * FROM prescriptions WHERE doctorId = ?";
+            List<Prescription> prescriptions = queryRunner.query(sql, new BeanListHandler<>(Prescription.class), docId);
+            insertDrugInfo(prescriptions);
+            return prescriptions;
+
+        }catch (SQLException exception){
+            throw new RuntimeException(exception.getMessage());
+        }
+    }
+
+    @Override
+    public List<Prescription> findUnResolvedPrescriptions() {
+        String sql = "SELECT * FROM prescriptions WHERE isResolved = ?";
+        List<Prescription> prescriptions = null;
+        try {
+            prescriptions = queryRunner.query(sql, new BeanListHandler<>(Prescription.class), false);
+            insertDrugInfo(prescriptions);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return prescriptions;
+    }
+
+    private void insertDrugInfo(List<Prescription> prescriptions) {
+        String drugSql = "SELECT drugId, quantityPrescribed FROM prescription_drugs WHERE prescriptionId = ?";
+        prescriptions.forEach((prescription)->{
+            try {
+                List<PrescriptionDrug> drugs = queryRunner.query(drugSql, new BeanListHandler<>(PrescriptionDrug.class), prescription.getPrescriptionId());
+                getPrescribedDrugs(prescription, drugs);
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public long count(){
@@ -117,6 +173,17 @@ public class PrescriptionRepositoryImpl implements PrescriptionRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void getPrescribedDrugs(Prescription prescription, List<PrescriptionDrug> prescriptionDrugs) {
+        List<Drug> prescribedDrugs = prescriptionDrugs.stream()
+                .map(drug-> {
+                    Drug newModel = new Drug();
+                    newModel.setDrugId(drug.getDrugId());
+                    newModel.setQuantity(drug.getQuantityPrescribed());
+                    return newModel;
+                }).collect(Collectors.toList());
+        prescription.setDrugsPrescribed(prescribedDrugs);
     }
 
 }

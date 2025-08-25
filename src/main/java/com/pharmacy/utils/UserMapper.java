@@ -1,5 +1,6 @@
 package com.pharmacy.utils;
 
+import com.pharmacy.data.models.Role;
 import com.pharmacy.data.models.User;
 import com.pharmacy.dtos.responses.UserResponse;
 import com.pharmacy.dtos.requests.AddUserRequest;
@@ -19,7 +20,7 @@ public class UserMapper {
         User entity = new User();
         entity.setUserName(addUserRequest.getUserName());
         entity.setUserPassword(addUserRequest.getPassword());
-
+        entity.setRole(Role.valueOf(addUserRequest.getRole()));
         return entity;
     }
 }

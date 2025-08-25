@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkIfUserExists(String username) {
-        int user = userRepository.checkIfUserExists(username);
+        long user = userRepository.checkIfUserExists(username);
         if (user != 0) {
             throw new RuntimeException("User already exists");
         }
