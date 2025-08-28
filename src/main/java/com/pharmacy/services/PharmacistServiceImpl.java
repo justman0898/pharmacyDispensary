@@ -10,6 +10,7 @@ import com.pharmacy.data.repositories.PrescriptionRepositoryImpl;
 import com.pharmacy.dtos.responses.AddPrescriptionResponse;
 import com.pharmacy.exceptions.InvalidDetailsException;
 import com.pharmacy.exceptions.InvalidDrugQuantityException;
+import com.pharmacy.exceptions.InvalidPrescriptionException;
 import com.pharmacy.utils.PrescriptionDrugMapper;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class PharmacistServiceImpl implements PharmacistService {
     public Prescription verifyPrescription(int prescriptionId) {
         if (!loggedIn) throw new InvalidDetailsException("Pharmacist is not logged in");
         return prescriptionRepository.findById(prescriptionId)
-                .orElseThrow(() -> new InvalidDetailsException("Prescription not found"));
+                .orElseThrow(() -> new InvalidPrescriptionException("Prescription not found"));
     }
 
     @Override
