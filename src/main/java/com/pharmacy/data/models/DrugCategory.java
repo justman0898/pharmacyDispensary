@@ -12,5 +12,7 @@ public enum DrugCategory {
     ANTIFUNGAL,
     COUGH_SUPPRESSANT,
     DECONGESTANT,
-    LAXATIVE
+    LAXATIVE,
+    UNKNOWN,
+    ANAGELSIC
 }

@@ -1,8 +1,12 @@
 package com.pharmacy.data.models;
 
+import lombok.Data;
+
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
+@Data
 public class Prescription {
     private int prescriptionId;
     private int patientId;
@@ -11,78 +15,8 @@ public class Prescription {
     private String doctorName;
     private String diagnosis;
     private List<Drug> drugsPrescribed;
-    private Date dateCreated;
+    private Date dateCreated = Date.valueOf(LocalDate.now());
     private boolean isResolved;
 
-    public int getPrescriptionId() {
-        return prescriptionId;
-    }
 
-    public void setPrescriptionId(int prescriptionId) {
-        this.prescriptionId = prescriptionId;
-    }
-
-    public String getPatientName() {
-        return patientName;
-    }
-
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
-    }
-
-    public int getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
-
-    public String getDoctorName() {
-        return doctorName;
-    }
-
-    public void setDoctorName(String doctorName) {
-        this.doctorName = doctorName;
-    }
-
-    public int getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public String getDiagnosis() {
-        return diagnosis;
-    }
-
-    public void setDiagnosis(String diagnosis) {
-        this.diagnosis = diagnosis;
-    }
-
-    public List<Drug> getDrugsPrescribed() {
-        return drugsPrescribed;
-    }
-
-    public void setDrugsPrescribed(List<Drug> drugsPrescribed) {
-        this.drugsPrescribed = drugsPrescribed;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public boolean isResolved() {
-        return isResolved;
-    }
-
-    public void setResolved(boolean resolved) {
-        isResolved = resolved;
-    }
 }
